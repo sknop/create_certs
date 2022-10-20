@@ -27,7 +27,7 @@ function create_cert_for_host() {
     openssl req -new -newkey rsa:4096 -keyout certs/$host.key -nodes -out certs/$host.csr -config certs/$host.cnf
 
     echo "Will be signed by $CAfile with $CAKeyfile"
-    openssl x509 -req -CA $CAfile -CAkey $CAKeyfile  -in certs/$host.csr -out certs/$host.crt -days 3650 -CAcreateserial
+    openssl x509 -req -CA $CAfile -CAkey $CAKeyfile  -in certs/$host.csr -out certs/$host.crt -days 3650 -CAcreateserial -extensions req_ext -extfile certs/$host.cnf
 
     echo "Convert to pkc12 file"
     openssl pkcs12 -password pass:$password -export -in certs/$host.crt -inkey certs/$host.key -out certs/$host.p12 -name service
