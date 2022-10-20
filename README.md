@@ -16,3 +16,5 @@ The hostname file should just contain hostnames separated by newline:
   host3
   
 And so on
+
+Will create a keystore file with certs and key stored and protected by password
