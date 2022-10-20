@@ -10,6 +10,7 @@
 #   Location of text file containing hostnames, one host for each line
 
 set -euo pipefail
+# set -x
 
 CAfile=$1
 CAKeyfile=$2
@@ -21,6 +22,10 @@ function create_cert_for_host() {
 
     # Use template to create CNF file
     sed "s/{{hostname}}/$host/g" template_cert.cnf  > certs/$host.cnf
+    openssl req -new -newkey rsa:4096 -keyout certs/$host.key -nodes -out certs/$host.csr -config certs/$host.cnf
+
+    echo "Will be signed by $CAfile with $CAKeyfile"
+    openssl x509 -req -CA $CAfile -CAkey $CAKeyfile  -in certs/$host.csr -out certs/$host.crt -days 3650 -CAcreateserial
 }
 
 # ensure certs directory is available
